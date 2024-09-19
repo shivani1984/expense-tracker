@@ -1,42 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Transaction.module.css";
 import EditImage from "../../images/edit.png";
 import DeleteImage from "../../images/trash-bin.png";
 
-export default class Transaction extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentHoverIndex: null
-    };
-  }
-  render() {
+export default function Transaction ({expense, index}) {
+  
+  const [currentIndex, setCurrentIndex] = useState(null)
+
+
+  
     return (
       <li
-        key={this.props.expense.id}
+        key={expense.id}
         className={`${styles.transaction} ${
-          this.props.expense.amount > 0 ? styles.profit : styles.loss
+          expense.amount > 0 ? styles.profit : styles.loss
         }`}
         onMouseOver={() => {
-          this.setState({ currentHoverIndex: this.props.index });
+          
+          setCurrentIndex(index);
         }}
         onMouseLeave={() => {
-          this.setState({ currentHoverIndex: null });
+         
+          setCurrentIndex(null);
         }}
       >
-        <div>{this.props.expense.text}</div>
+        <div>{expense.text}</div>
         <div className={styles.transactionOptions}>
           <div
             className={`${styles.amount} ${
-              this.state.currentHoverIndex === this.props.index &&
+              currentHoverIndex === index &&
               styles.movePrice
             }`}
           >
-            ${this.props.expense.amount}
+            ${expense.amount}
           </div>
           <div
             className={`${styles.btnContainer} ${
-              this.state.currentHoverIndex === this.props.index && styles.active
+              currentHoverIndex === index && styles.active
             }`}
           >
             <div className={styles.edit} onClick={() => {}}>
@@ -50,4 +50,4 @@ export default class Transaction extends React.Component {
       </li>
     );
   }
-}
+
