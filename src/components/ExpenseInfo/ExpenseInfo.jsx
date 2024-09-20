@@ -1,13 +1,24 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./ExpenseInfo.module.css";
+import App from "../../App";
 
-export default function ExpenseInfo () {
+export default function ExpenseInfo ({expenses}) {
+  const[totalExpense,setTotalExpense]=useState(0);
+  useEffect(() => {
+    const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    setTotalExpense(total);
+  }, [expenses]);
   
     return (
       <div className={styles.expenseInfoContainer}>
         <div className={styles.balance}>
           <h4>YOUR BALANCE</h4>
-          <h1>${/* Grand total should be displayed here */}</h1>
+          <h1>
+            ${totalExpense}</h1>
+          
+
+            
+          
         </div>
         <div className={styles.incomeExpenseContainer}>
           <div>
