@@ -14,6 +14,13 @@ export default function App() {
     setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
   };
 
+  const deleteExpense = (indexToDelete) => {
+    setExpenses((prevExpenses) =>
+      prevExpenses.filter((_, index) => index !== indexToDelete)
+    );
+  };
+
+
   return (
     <>
       <h2 className="mainHeading">Expense Tracker</h2>
@@ -25,7 +32,8 @@ export default function App() {
         />
         <div className="expenseContainer">
           <ExpenseInfo expenses={expenses} /> {/* Pass expenses as a prop */}
-          <ExpenseList expenses={expenses} /> {/* Pass expenses as a prop */}
+          <ExpenseList expenses={expenses}
+                deleteExpense={deleteExpense} /> {/* Pass expenses as a prop */}
         </div>
       </div>
     </>

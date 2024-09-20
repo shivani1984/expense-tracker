@@ -17,8 +17,20 @@
     gap: 0.5rem;
     height: 100%;
     text-transform: uppercase;
+    padding: 10px;
 }
 
 .transactionList li {
+    background-color: aliceblue;
+    box-shadow: var(--box-shadow);
+    width: 100%;
     list-style: none;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-btn {
+    padding: 15px;
+    background-color: blue;
 }
