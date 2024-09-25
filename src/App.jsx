@@ -14,12 +14,10 @@ export default function App() {
     setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
   };
 
-  const deleteExpense = (indexToDelete) => {
-    setExpenses((prevExpenses) =>
-      prevExpenses.filter((_, index) => index !== indexToDelete)
-    );
+  const deleteExpense = (id) => {
+    setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
   };
-
+  
 
   return (
     <>

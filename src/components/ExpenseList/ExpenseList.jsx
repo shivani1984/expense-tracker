@@ -14,7 +14,7 @@ const ExpenseList = ({ expenses, deleteExpense }) => {
               key={expense.id}
               expense={expense}
               deleteExpense={deleteExpense}
-              //Pass props here to handle updation
+              
             />
           );
         })}

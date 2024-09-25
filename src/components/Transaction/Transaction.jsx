@@ -32,8 +32,8 @@ const Transaction = ({ expense, deleteExpense, index }) => {
             currentHoverIndex === index && styles.active
           }`}
         >
-         
-          <div className={styles.edit} onClick={() => {}}>
+          {/* complete the onClick functionality of the following image */}
+          <div className={styles.edit}  onClick={() => deleteExpense(expense.id)}>
             <img src={EditImage} height="100%" alt="Edit" />
           </div>
           <div
