@@ -3,8 +3,14 @@ import styles from "./Transaction.module.css";
 import EditImage from "../../images/edit.png";
 import DeleteImage from "../../images/trash-bin.png";
 
-const Transaction = ({ expense, deleteExpense, index }) => {
+const Transaction = ({
+  expense,
+  changeExpenseToUpdate,
+  deleteExpense,
+  index
+}) => {
   const [currentHoverIndex, setCurrentHoverIndex] = useState(null);
+
   return (
     <li
       key={expense.id}
@@ -25,15 +31,19 @@ const Transaction = ({ expense, deleteExpense, index }) => {
             currentHoverIndex === index && styles.movePrice
           }`}
         >
-          ${expense.amount}
+          $ {expense.amount}
         </div>
         <div
           className={`${styles.btnContainer} ${
             currentHoverIndex === index && styles.active
           }`}
         >
-          {/* complete the onClick functionality of the following image */}
-          <div className={styles.edit}  onClick={() => deleteExpense(expense.id)}>
+          <div
+            className={styles.edit}
+            onClick={() => {
+              changeExpenseToUpdate(expense);
+            }}
+          >
             <img src={EditImage} height="100%" alt="Edit" />
           </div>
           <div

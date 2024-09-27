@@ -1,39 +1,83 @@
-import "./App.css";
-import React, { useState } from "react";
+import { useState, useReducer } from "react";
 import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
-import ExpenseList from "./components/ExpenseList/ExpenseList";
 import ExpenseInfo from "./components/ExpenseInfo/ExpenseInfo";
+import ExpenseList from "./components/ExpenseList/ExpenseList";
+import "./App.css";
 
-export default function App() {
-  // Create state for the expenses here
-  const [expenseTextInput, setExpenseTextInput] = useState("");
-  const [expenses, setExpenses] = useState([]);
+const reducer = (state, action) => {
+    const { payload } = action;
+    switch (action.type) {
+        case "ADD_EXPENSE": {
+            return {
+                expenses: [payload.expense, ...state.expenses]
+            };
+        }
+        case "REMOVE_EXPENSE": {
+            return {
+                expenses: state.expenses.filter((expense) => expense.id !== payload.id)
+            };
+        }
+        case "UPDATE_EXPENSE": {
+            const expensesDuplicate = state.expenses;
+            expensesDuplicate[payload.expensePos] = payload.expense;
+            return {
+                expenses: expensesDuplicate
+            };
+        }
+        default:
+            return state;
+    }
+};
 
-  // Function to add a new expense
-  const addExpense = (newExpense) => {
-    setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
-  };
+function App() {
+    const [state, dispatch] = useReducer(reducer, { expenses: [] });
+    const [expenseToUpdate, setExpenseToUpdate] = useState(null);
 
-  const deleteExpense = (id) => {
-    setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== id));
-  };
-  
+    const addExpense = (expense) => {
+        dispatch({ type: "ADD_EXPENSE", payload: { expense } });
+    };
 
-  return (
-    <>
-      <h2 className="mainHeading">Expense Tracker</h2>
-      <div className="App">
-        <ExpenseForm
-          expenseTextInput={expenseTextInput}
-          setExpenseTextInput={setExpenseTextInput}
-          addExpense={addExpense} // Pass the addExpense function to ExpenseForm
-        />
-        <div className="expenseContainer">
-          <ExpenseInfo expenses={expenses} /> {/* Pass expenses as a prop */}
-          <ExpenseList expenses={expenses}
-                deleteExpense={deleteExpense} /> {/* Pass expenses as a prop */}
-        </div>
-      </div>
-    </>
-  );
+    const deleteExpense = (id) => {
+        dispatch({ type: "REMOVE_EXPENSE", payload: { id } });
+    };
+
+    const resetExpenseToUpdate = () => {
+        setExpenseToUpdate(null);
+    };
+
+    const updateExpense = (expense) => {
+        const expensePos = state.expenses.findIndex((exp) => exp.id === expense.id);
+      
+        if (expensePos === -1) {
+          return false;
+        }
+      
+        dispatch({ type: "UPDATE_EXPENSE", payload: { expensePos, expense } });
+        return true;
+      };
+      
+
+    return (
+        <>
+            <h2 className="mainHeading">Expense Tracker</h2>
+            <div className="App">
+                <ExpenseForm
+                    addExpense={addExpense}
+                    expenseToUpdate={expenseToUpdate}
+                    updateExpense={updateExpense}
+                    resetExpenseToUpdate={resetExpenseToUpdate}
+                />
+                <div className="expenseContainer">
+                    <ExpenseInfo expenses={state.expenses} />
+                    <ExpenseList
+                        expenses={state.expenses}
+                        deleteExpense={deleteExpense}
+                        changeExpenseToUpdate={setExpenseToUpdate}
+                    />
+                </div>
+            </div>
+        </>
+    );
 }
+
+export default App;
